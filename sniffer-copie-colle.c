@@ -28,11 +28,11 @@ int main()
      
     unsigned char *buffer = (unsigned char *)malloc(65536); //Its Big!
      
-    logfile=fopen("log.txt","w");
-    if(logfile==NULL) printf("Unable to create file.");
+    logfile = fopen("log.txt","w");
+    if(logfile == NULL) printf("Unable to create file.");
     printf("Starting...\n");
     //Create a raw socket that shall sniff
-    sock_raw = socket(AF_INET , SOCK_RAW , IPPROTO_TCP);
+    sock_raw = socket(PF_INET , SOCK_RAW , IPPROTO_TCP);
     if(sock_raw < 0)
     {
         printf("Socket Error\n");
@@ -43,6 +43,7 @@ int main()
         saddr_size = sizeof saddr;
         //Receive a packet
         data_size = recvfrom(sock_raw , buffer , 65536 , 0 , &saddr , &saddr_size);
+        printf("\n%s\n",saddr.sa_data);
         if(data_size <0 )
         {
             printf("Recvfrom error , failed to get packets\n");
@@ -126,7 +127,7 @@ void print_tcp_packet(unsigned char* Buffer, int Size)
 {
     unsigned short iphdrlen;
 
-    printf("paquet tcp vu");
+    //printf("paquet tcp vu");
     struct iphdr *iph = (struct iphdr *)Buffer;
     iphdrlen = iph->ihl*4;
 
